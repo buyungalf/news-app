@@ -1,93 +1,66 @@
 <%- include('templates/header')-%>
-<div class="container">
-  <h1 class="text-center mt-2"><%=item.title%></h1>
-  <div class="row mx-1">
-    <img src="/<%=item.thumbnail%>" alt="" />
-    <div class="content mx-4">
-      <h5 class="card-title"></h5>
-      <p class="card-text"><%=item.content%></p>
-      <footer class="blockquote-footer mt-4">
-        <cite title="Source Title"><%=item.author%></cite>
-      </footer>
-      <a href="/news/edit/<%=item.id%>" class="btn btn-primary mt-2">Edit</a>
-      <a href="/news/delete/<%=item.id%>" class="btn btn-danger mt-2">Delete</a>
+
+  <h1 class="text-center mt-2">
+    <%=item.title%>
+  </h1>
+  <p title="Source Title" class="text-center">by <%=item.author%>
+  </p>
+
+
+  <main class="container">
+    <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+      <img src="/<%=item.thumbnail%>" width="1200" alt="" />
+
     </div>
 
-    <div class="comments media-block">
-      <a class="media-left" href="#"
-        ><img
-          class="img-circle img-sm"
-          alt="Profile Picture"
-          src="/images/user/user.png"
-      /></a>
-      <div class="media-body">
-        <div class="comment-header">
-          <a href="#" class="media-heading box-inline text-main text-bold"
-            >User</a
-          >
-          <p class="text-muted text-sm">2020-20-20</p>
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+      <p>
+        <%=item.content%>
+      </p>
+      <h6 class="border-bottom pb-2 mb-0">Recent comments</h6>
+      <%comments.forEach(function(comment){ %>
+        <div class="d-flex text-muted pt-3">
+          <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32"
+            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
+            preserveAspectRatio="xMidYMid slice" focusable="false">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#007bff" /><text x="50%" y="50%" fill="#007bff"
+              dy=".3em">32x32</text>
+          </svg>
+          <p class="pb-3 mb-0 small lh-sm border-bottom">
+            <strong class="d-block text-gray-dark">
+              <%=comment.name%>
+            </strong>
+            <%=comment.comment%>
+          </p>
         </div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum dicta
-          amet consequuntur at nobis q
-        </p>
-        <a class="btn btn-sm btn-default"
-          ><i class="icon-lg demo-pli-right-4"></i> Reply</a
-        >
-      </div>
+        <% }) %>
+
+          <small class="d-block mt-3">
+            <h5 class="mb-3">Write a comment..</h5>
+            <form method="post" action="">
+              <div class="row">
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <input class="form-control" type="text" name="name" placeholder="Your Name">
+                  </div>
+                  <div class="form-group mt-3">
+                    <textarea class="form-control" rows="9" name="comment" placeholder="Your reply"></textarea>
+                  </div>
+                  <div class="form-group">
+
+                    <small class="d-block text-end mt-3">
+                      <button id="btn_submit_reply" type="submit" class="btn btn-success btn-block">
+                        <i class="fa fa-comment"></i> Submit reply
+                      </button>
+                      <a href="/news" class="btn btn-primary">Back</a>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </small>
     </div>
-    <div class="container">
-      <p class="text-lg text-main text-bold text-uppercase">Leave a comment</p>
-      <form role="form">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <input
-                type="hidden"
-                class="form-control"
-                id="id_tugas_reply"
-                value="<?= $id_tugas; ?>"
-              />
-            </div>
-            <div class="form-group">
-              <input
-                type="hidden"
-                class="form-control"
-                id="id_user_reply"
-                value="<?= $this->session->id_user; ?>"
-              />
-            </div>
-            <div class="form-group">
-              <input
-                type="hidden"
-                class="form-control"
-                id="id_parent_reply"
-                value="<?= $id_parent; ?>"
-              />
-            </div>
-            <div class="form-group">
-              <textarea
-                class="form-control"
-                rows="9"
-                id="reply"
-                placeholder="Your reply"
-              ></textarea>
-            </div>
-            <hr class="article-line" />
-            <div class="form-group">
-              <button
-                id="btn_submit_reply"
-                type="button"
-                class="btn btn-success btn-block"
-              >
-                <i class="fa fa-comment"></i> Submit reply
-              </button>
-            </div>
-          </div>
-          <div class="col-md-4"></div>
-      </form>
-    </div>
-  </div>
-  <a href="/news" class="btn btn-primary mt-2">Back</a>
-</div>
-<%- include('templates/footer')-%>
+  </main>
+  <%- include('templates/footer')-%>

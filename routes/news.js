@@ -4,6 +4,7 @@ var router = express.Router();
 
 const db = require("../models");
 const News = db.news;
+const Comments = db.comments;
 const Op = db.Sequelize.Op;
 
 /* GET home page. */
@@ -25,11 +26,24 @@ router.get("/detail", function (req, res, next) {
   var id = parseInt(req.query.id);
   News.findByPk(id)
     .then((data) => {
-      res.render("news_detail", { title: "News App", item: data });
+      Comments.findAll({ where: { news_id: id } })
+        .then((data2) => {
+          res.render("news_detail", {
+            title: "News App",
+            item: data,
+            comments: data2,
+          });
+        })
+        .catch((err) => {
+          res.json({
+            info: "Error1",
+            message: err.message,
+          });
+        });
     })
     .catch((err) => {
       res.json({
-        info: "Error",
+        info: "Error2",
         message: err.message,
       });
     });

@@ -6,7 +6,7 @@ const Op = db.Sequelize.Op;
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+  res.render("coba", { title: "Express" });
 });
 
 module.exports = router;
