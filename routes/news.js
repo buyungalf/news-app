@@ -3,12 +3,13 @@ var express = require("express");
 var router = express.Router();
 
 const db = require("../models");
+const auth = require("../auth/index");
 const News = db.news;
 const Comments = db.comments;
 const Op = db.Sequelize.Op;
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
+router.get("/", auth, function (req, res, next) {
   News.findAll()
     .then((data) => {
       res.render("index", { title: "News App", News: data });

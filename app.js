@@ -4,11 +4,18 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var multer = require("multer");
+var session = require("express-session");
 
 var indexRouter = require("./routes/index");
 var newsRouter = require("./routes/news");
 
 var app = express();
+
+app.use(
+  session({
+    secret: "sheesh",
+  })
+);
 
 var fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
