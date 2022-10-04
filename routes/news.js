@@ -135,4 +135,24 @@ router.get("/delete/:id", function (req, res, next) {
     });
 });
 
+//insert comment
+router.post("/add_comment", function (req, res, next) {
+  let id = req.body.news_id;
+  let comment = {
+    name: req.body.name,
+    news_id: id,
+    comment: req.body.comment,
+  };
+  Comments.create(comment)
+    .then(() => {
+      res.redirect("/news/detail?id=" + id);
+    })
+    .catch((err) => {
+      res.json({
+        info: "Error",
+        message: err.message,
+      });
+    });
+});
+
 module.exports = router;
