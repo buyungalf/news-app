@@ -9,10 +9,34 @@ const Comments = db.comments;
 const Op = db.Sequelize.Op;
 
 /* GET home page. */
-router.get("/", auth, function (req, res, next) {
+router.get("/", function (req, res, next) {
   News.findAll()
     .then((data) => {
-      res.render("index", { title: "News App", News: data });
+      res.render("index", {
+        title: "News App",
+        deleted: false,
+        News: data,
+        session: req.session,
+      });
+    })
+    .catch((err) => {
+      res.json({
+        info: "Error",
+        message: err.message,
+      });
+    });
+});
+
+/* GET deleted news */
+router.get("/deleted", auth, function (req, res, next) {
+  News.findAll({ where: { destroyTime: { [Op.not]: null } }, paranoid: false })
+    .then((data) => {
+      res.render("index", {
+        title: "News App",
+        deleted: true,
+        News: data,
+        session: req.session,
+      });
     })
     .catch((err) => {
       res.json({
@@ -147,6 +171,23 @@ router.post("/add_comment", function (req, res, next) {
   Comments.create(comment)
     .then(() => {
       res.redirect("/news/detail?id=" + id);
+    })
+    .catch((err) => {
+      res.json({
+        info: "Error",
+        message: err.message,
+      });
+    });
+});
+
+// restore deleted news
+router.get("/restore/:id", function (req, res, next) {
+  let id = parseInt(req.params.id);
+  News.restore({
+    where: { id: id },
+  })
+    .then((data) => {
+      res.redirect("/news/deleted");
     })
     .catch((err) => {
       res.json({

@@ -72,7 +72,7 @@ router.post("/login", function (req, res, next) {
 // logout
 router.get("/logout", function (req, res, next) {
   req.session.destroy();
-  res.redirect("/login");
+  res.redirect("/news");
 });
 
 module.exports = router;
