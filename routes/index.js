@@ -7,7 +7,7 @@ const User = db.users;
 const Op = db.Sequelize.Op;
 
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+  res.redirect("/login");
 });
 
 // register form

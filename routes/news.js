@@ -197,4 +197,22 @@ router.get("/restore/:id", function (req, res, next) {
     });
 });
 
+// force delete news
+router.get("/force_delete/:id", function (req, res, next) {
+  let id = parseInt(req.params.id);
+  News.destroy({
+    where: { id: id },
+    force: true,
+  })
+    .then((data) => {
+      res.redirect("/news/deleted");
+    })
+    .catch((err) => {
+      res.json({
+        info: "Error",
+        message: err.message,
+      });
+    });
+});
+
 module.exports = router;

@@ -1,33 +1,47 @@
 <%- include('templates/header')-%>
-<div class="container div-content">
-  <div class="row">
-    <div class="col-md-8 mt-4">
-      <form method="post" action="add" enctype="multipart/form-data">
-        <div class="mb-3">
-          <label for="" class="form-label">Title</label>
-          <input type="text" class="form-control" name="title" />
+  <!-- Section: Design Block -->
+  <section class="text-center">
+    <!-- Background image -->
+    <div class="p-5 bg-image" style="
+        background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+        height: 300px;
+        "></div>
+    <!-- Background image -->
+
+    <div class="card mx-4 mx-md-5 shadow-5-strong mb-4" style="
+        margin-top: -100px;
+        background: hsla(0, 0%, 100%, 0.8);
+        backdrop-filter: blur(30px);
+        ">
+      <div class="card-body py-5 px-md-5">
+
+        <div class="row d-flex justify-content-center">
+          <div class="col-lg-8">
+            <h2 class="fw-bold mb-5">Add News</h2>
+            <form method="post" action="add" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="" class="form-label">Title</label>
+                <input type="text" class="form-control" name="title" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Thumbnail</label>
+                <input type="file" class="form-control" name="thumbnail" />
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Content</label>
+                <textarea name="content" id="" class="form-control" cols="30" rows="10"></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Author</label>
+                <input type="text" class="form-control" name="author" />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <a href="/news" class="btn btn-dark">Back</a>
+            </form>
+          </div>
         </div>
-        <div class="mb-3">
-          <label for="" class="form-label">Thumbnail</label>
-          <input type="file" class="form-control" name="thumbnail" />
-        </div>
-        <div class="mb-3">
-          <label for="" class="form-label">Content</label>
-          <textarea
-            name="content"
-            id=""
-            class="form-control"
-            cols="30"
-            rows="10"
-          ></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="" class="form-label">Author</label>
-          <input type="text" class="form-control" name="author" />
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+      </div>
     </div>
-  </div>
-</div>
-<%- include('templates/footer')-%>
+  </section>
+  <!-- Section: Design Block -->
+  <%- include('templates/footer')-%>
