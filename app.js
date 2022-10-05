@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var multer = require("multer");
 var session = require("express-session");
+var flash = require("connect-flash");
 
 var indexRouter = require("./routes/index");
 var newsRouter = require("./routes/news");
@@ -51,6 +52,12 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("thumbnail")
 );
+app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
+  next();
+});
 
 const db = require("./models");
 db.sequelize

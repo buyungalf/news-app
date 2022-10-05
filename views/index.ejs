@@ -49,38 +49,44 @@
 
     <main class="container">
       <div class="row mb-2">
-        <%News.forEach(function(item){ %>
-          <div class="col-md-12">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-              <div class="col p-4 d-flex flex-column position-static">
-                <h3 class="mb-0">
-                  <%= item.title %>
-                </h3>
-                <div class="mb-1 text-muted">
-                  <%= item.createdAt %>
-                </div>
-                <p class="card-text mb-auto">
-                  <%= item.content.substring(0,250) %>..
-                </p>
-                <a href="/news/detail?id=<%= item.id %>">Continue reading</a>
-                <% if(session.username) { %>
-                  <div class="d-none d-none d-lg-block">
-                    <% if(deleted) { %>
-                      <a href="/news/restore/<%= item.id %>" class="btn btn-warning mt-2">Restore</a>
-                      <a href="/news/force_delete/<%= item.id %>" class="btn btn-danger mt-2">Force Delete</a>
-                      <% } else {%>
-                        <a href="/news/edit/<%= item.id %>" class="btn btn-primary mt-2">Edit</a>
-                        <a href="/news/delete/<%= item.id %>" class="btn btn-danger mt-2">Delete</a>
-                        <% } %>
-                  </div>
-                  <% } %>
-              </div>
-              <div class="col-auto d-none d-lg-block">
-                <img src="/<%= item.thumbnail %>" width="400px" alt="" />
-              </div>
-            </div>
+        <% if(success && success.length> 0) { %>
+          <div class="alert alert-primary text-center" role="alert">
+            <%- success %>
           </div>
-          <% }) %>
+          <% } %>
+            <%News.forEach(function(item){ %>
+              <div class="col-md-12">
+                <div
+                  class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                  <div class="col p-4 d-flex flex-column position-static">
+                    <h3 class="mb-0">
+                      <%= item.title %>
+                    </h3>
+                    <div class="mb-1 text-muted">
+                      <%= item.createdAt %>
+                    </div>
+                    <p class="card-text mb-auto">
+                      <%= item.content.substring(0,250) %>..
+                    </p>
+                    <a href="/news/detail?id=<%= item.id %>">Continue reading</a>
+                    <% if(session.username) { %>
+                      <div class="d-none d-none d-lg-block">
+                        <% if(deleted) { %>
+                          <a href="/news/restore/<%= item.id %>" class="btn btn-warning mt-2">Restore</a>
+                          <a href="/news/force_delete/<%= item.id %>" class="btn btn-danger mt-2">Force Delete</a>
+                          <% } else {%>
+                            <a href="/news/edit/<%= item.id %>" class="btn btn-primary mt-2">Edit</a>
+                            <a href="/news/delete/<%= item.id %>" class="btn btn-danger mt-2">Delete</a>
+                            <% } %>
+                      </div>
+                      <% } %>
+                  </div>
+                  <div class="col-auto d-none d-lg-block">
+                    <img src="/<%= item.thumbnail %>" width="400px" alt="" />
+                  </div>
+                </div>
+              </div>
+              <% }) %>
       </div>
     </main>
   </section>

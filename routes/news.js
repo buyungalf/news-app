@@ -46,7 +46,7 @@ router.get("/deleted", auth, function (req, res, next) {
     });
 });
 
-// get detail
+// get news detail
 router.get("/detail", function (req, res, next) {
   var id = parseInt(req.query.id);
   News.findByPk(id)
@@ -74,15 +74,24 @@ router.get("/detail", function (req, res, next) {
     });
 });
 
-router.get("/add", function (req, res, next) {
+router.get("/add", auth, function (req, res, next) {
   res.render("news_add", { title: "Add News" });
 });
 
 // insert news
-router.post("/add", function (req, res, next) {
-  if (!req.file) {
-    const err = new Error("image not found");
-    throw err;
+router.post("/add", auth, function (req, res, next) {
+  if (!req.body.title) {
+    req.flash("error", "Please input the title!");
+    return res.redirect("add");
+  } else if (!req.file) {
+    req.flash("error", "Please upload image for thumbnail!");
+    return res.redirect("add");
+  } else if (!req.body.content) {
+    req.flash("error", "Please input the content!");
+    return res.redirect("add");
+  } else if (!req.body.author) {
+    req.flash("error", "Please input the author!");
+    return res.redirect("add");
   }
 
   let news = {
@@ -92,8 +101,9 @@ router.post("/add", function (req, res, next) {
     author: req.body.author,
   };
   News.create(news)
-    .then((data) => {
-      res.redirect("/news");
+    .then(() => {
+      req.flash("success", "Data inserted successfully!");
+      return res.redirect("/news");
     })
     .catch((err) => {
       res.json({
@@ -104,16 +114,26 @@ router.post("/add", function (req, res, next) {
 });
 
 // edit news
-router.get("/edit/:id", function (req, res, next) {
+router.get("/edit/:id", auth, function (req, res, next) {
   let id = req.params.id;
   News.findByPk(id).then((data) => {
     res.render("news_edit", { title: "Edit News", item: data });
   });
 });
 
-router.post("/edit", function (req, res, next) {
-  let news = {};
+router.post("/edit", auth, function (req, res, next) {
   let id = req.body.id;
+  if (!req.body.title) {
+    req.flash("error", "Please input the title!");
+    return res.redirect("edit/" + id);
+  } else if (!req.body.content) {
+    req.flash("error", "Please input the content!");
+    return res.redirect("edit/" + id);
+  } else if (!req.body.author) {
+    req.flash("error", "Please input the author!");
+    return res.redirect("edit/" + id);
+  }
+  let news = {};
   if (!req.file) {
     news = {
       title: req.body.title,
@@ -132,8 +152,9 @@ router.post("/edit", function (req, res, next) {
   News.update(news, {
     where: { id: id },
   })
-    .then((data) => {
-      res.redirect("/news");
+    .then(() => {
+      req.flash("success", "Data updated successfully!");
+      return res.redirect("/news");
     })
     .catch((err) => {
       res.json({
@@ -144,13 +165,14 @@ router.post("/edit", function (req, res, next) {
 });
 
 // delete news
-router.get("/delete/:id", function (req, res, next) {
+router.get("/delete/:id", auth, function (req, res, next) {
   let id = parseInt(req.params.id);
   News.destroy({
     where: { id: id },
   })
-    .then((data) => {
-      res.redirect("/news");
+    .then(() => {
+      req.flash("success", "Delete success!");
+      return res.redirect("/news");
     })
     .catch((err) => {
       res.json({
@@ -181,12 +203,13 @@ router.post("/add_comment", function (req, res, next) {
 });
 
 // restore deleted news
-router.get("/restore/:id", function (req, res, next) {
+router.get("/restore/:id", auth, function (req, res, next) {
   let id = parseInt(req.params.id);
   News.restore({
     where: { id: id },
   })
-    .then((data) => {
+    .then(() => {
+      req.flash("success", "Restore success!");
       res.redirect("/news/deleted");
     })
     .catch((err) => {
@@ -198,13 +221,14 @@ router.get("/restore/:id", function (req, res, next) {
 });
 
 // force delete news
-router.get("/force_delete/:id", function (req, res, next) {
+router.get("/force_delete/:id", auth, function (req, res, next) {
   let id = parseInt(req.params.id);
   News.destroy({
     where: { id: id },
     force: true,
   })
-    .then((data) => {
+    .then(() => {
+      req.flash("success", "Delete success!");
       res.redirect("/news/deleted");
     })
     .catch((err) => {

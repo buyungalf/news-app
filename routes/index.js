@@ -42,7 +42,13 @@ router.get("/login", function (req, res, next) {
 });
 
 router.post("/login", function (req, res, next) {
-  //   var password_hash = bcrypt.compareSync(req.body.password, hash);
+  if (!req.body.username) {
+    req.flash("error", "Please input the username");
+    return res.redirect("/login");
+  } else if (!req.body.password) {
+    req.flash("error", "Please input the password");
+    return res.redirect("/login");
+  }
   User.findOne({
     where: { username: req.body.username },
   })
@@ -55,9 +61,11 @@ router.post("/login", function (req, res, next) {
 
           res.redirect("/news");
         } else {
+          req.flash("error", "Password isn't correct!");
           res.redirect("/login");
         }
       } else {
+        req.flash("error", "Sorry, we couldn't find your account.");
         res.redirect("/login");
       }
     })
